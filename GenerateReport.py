@@ -1,3 +1,8 @@
+#Developer: Dean Hutton
+#Project: ReportLabs Report
+#Date: 5/31/15
+
+#Define imports
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table
@@ -6,17 +11,21 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.units import mm
 from reportlab.graphics.shapes import *
 from io import BytesIO
+
 #Use this list later on to SPAN on location, People MGMT, Tenure Labels
 labelRowList = []
+
+#BytesIO buffer as well as output file to save buffer too. Eventually output file will be replace with HTTP request
 buffer = BytesIO()
 file = open('Employee_Survey.pdf', 'w+')
 
+
+#Define styles and page properties
 width, height = letter
 styles = getSampleStyleSheet()
 styleN = styles['BodyText']
 styleN.alignment = TA_LEFT
 
-#Styles
 headerStyle = styles['Normal']
 headerStyle.alignment = TA_CENTER
 headerStyle.fontSize = 7
@@ -149,14 +158,13 @@ largeInputExample = {
      ],
  }
 
-#Function that is used
+#Function that is used to generate charts. The methodolgy is to create 3 rectangles and put them tohe
 def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentUnfavorable,header=False):
 
     #Header Rectangles
     percentFavorableFloat = float(percentFavorable)/100
     percentNeutralFloat = float(percentNeutral)/100
     percentUnfavorableFloat = float(percentUnfavorable)/100
-
     if header:
         d = Drawing(0*mm, 10*mm)
 
@@ -168,10 +176,11 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
     rectangleYposition = 0
     rectangleTextYposition = 1
     rectangleTextHeight = 2.5
+
+    #Offset that is used to account for two letters in percent e.g. 11 or 74
     rectangleTextXPositionOffset = 1.25
 
-
-    #Favorable rect
+    #Favorable Rect Creation
     favorableXposition = 0
     favorableRectWidth = percentFavorableFloat*totalRectangleLength
     if header:
@@ -181,7 +190,7 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
         favorableRectTextXPosition = (favorableXposition +favorableRectWidth)/2 - rectangleTextXPositionOffset
         favorableRectText = str(percentFavorable)
 
-    d.add(Rect(favorableXposition*mm, rectangleYposition*mm, favorableRectWidth*mm, rectangleHeight*mm, fillColor=colors.green))
+    d.add(Rect(favorableXposition*mm, rectangleYposition*mm, favorableRectWidth*mm, rectangleHeight*mm, fillColor=colors.green,strokeColor=colors.green))
     d.add(String(favorableRectTextXPosition*mm, rectangleTextYposition*mm, favorableRectText, fontSize=rectangleTextHeight*mm,fontName='Helvetica'))
 
     #Neutral Rect
@@ -194,7 +203,7 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
         neutralRectTextXPosition = (neutralXposition + neutralRectWidth + favorableXposition+favorableRectWidth)/2 - rectangleTextXPositionOffset
         neutralRectText = str(percentNeutral)
 
-    d.add(Rect(neutralXposition*mm, rectangleYposition*mm, neutralRectWidth*mm, rectangleHeight*mm, fillColor=colors.yellow))
+    d.add(Rect(neutralXposition*mm, rectangleYposition*mm, neutralRectWidth*mm, rectangleHeight*mm, fillColor=colors.yellow, strokeColor=colors.yellow))
     d.add(String(neutralRectTextXPosition*mm, rectangleTextYposition*mm, neutralRectText, fontSize=rectangleTextHeight*mm,fontName='Helvetica'))
 
     #Unfavorable Rect
@@ -207,7 +216,7 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
         unfavorableRectTextXPosition = (unfavorableXposition + unfavorableRectWidth + neutralXposition + neutralRectWidth)/2 - rectangleTextXPositionOffset
         unfavorableRectText = str(percentUnfavorable)
 
-    d.add(Rect(unfavorableXposition*mm, rectangleYposition*mm, unfavorableRectWidth*mm, rectangleHeight*mm, fillColor=colors.red))
+    d.add(Rect(unfavorableXposition*mm, rectangleYposition*mm, unfavorableRectWidth*mm, rectangleHeight*mm, fillColor=colors.red, strokeColor=colors.red))
     d.add(String(unfavorableRectTextXPosition*mm,rectangleTextYposition*mm, unfavorableRectText, fontSize=rectangleTextHeight*mm,fontName='Helvetica'))
 
     if header:
