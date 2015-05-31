@@ -17,7 +17,7 @@ styleN = styles['BodyText']
 styleN.alignment = TA_LEFT
 
 headerStyle = styles['Normal']
-headerStyle.alignment = TA_CENTER
+headerStyle.alignment = TA_LEFT
 headerStyle.fontSize = 7
 headerStyle.fontName = 'Helvetica-Bold'
 
@@ -147,7 +147,7 @@ perfMgmtHeader = Paragraph('''<b>Perfomance Managment</b>''', headerStyle)
 totalNheader = Paragraph('''<b>Total N''', headerStyle)
 percentResp = Paragraph('''<b>Percent Responding''', headerStyle)
 percentFavHeader = Paragraph('''<b>% Fav''', headerStyle)
-percentDistHeader = Paragraph('''<b>% Distribution''', headerStyle)
+percentDistHeader = Paragraph('''<b> &nbsp &nbsp &nbsp &nbsp &nbsp %  Distribution <br/> 1 &nbsp &nbsp &nbsp &nbsp  2 &nbsp &nbsp &nbsp &nbsp 3 &nbsp &nbsp &nbsp &nbsp 4 &nbsp &nbsp &nbsp &nbsp 5''', headerStyle)
 meanHeader = Paragraph('''<b>Mean''', headerStyle)
 data= [[perfMgmtHeader, totalNheader,percentRespondingHeader, percentFavHeader, percentDistHeader,meanHeader],
        ['10', '11', chart, '13', '14', '15'],
