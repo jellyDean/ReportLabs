@@ -2,8 +2,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4, cm, letter, inch
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
-from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER
-from reportlab.lib import colors
+from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.units import mm
 from reportlab.graphics.shapes import *
 from io import BytesIO
@@ -16,14 +16,25 @@ styles = getSampleStyleSheet()
 styleN = styles['BodyText']
 styleN.alignment = TA_LEFT
 
+#Styles
 headerStyle = styles['Normal']
 headerStyle.alignment = TA_LEFT
 headerStyle.fontSize = 7
 headerStyle.fontName = 'Helvetica-Bold'
 
-inputExample = {
+rightAlignedStyle = styles['Normal']
+rightAlignedStyle.alignment = TA_RIGHT
+rightAlignedStyle.fontSize = 7
+rightAlignedStyle.fontName = 'Helvetica'
+
+leftAlignedStyle = styles['Normal']
+leftAlignedStyle.alignment = TA_LEFT
+leftAlignedStyle.fontSize = 7
+leftAlignedStyle.fontName = 'Helvetica'
+
+smallInputExample = {
      'summary': {
-     'n': 114,
+     'total_n': 114,
      'responding': [68, 26, 6],
      'favorable': 68,
      'distrobution': [2, 5, 26, 33, 34],
@@ -31,23 +42,103 @@ inputExample = {
      },
      'demographics': [
          {
-         "Locations": [
-             {'name': 'sample 1', 'n': 12, 'responding':[20,30,50]},
-             {'name': 'sample 2', 'n': 16, 'responding':[33,33,33]},
+         'Locations': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[33,33,33],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
             ],
-         "People Management": [
-             {'name': 'sample 1', 'n': 12, 'responding':[20, 30, 50]},
-             {'name': 'sample 2', 'n': 16, 'responding':[10,50,40]},
+         },
+         {
+         'People Managment': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[20, 30, 50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,50,40],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
             ],
-         "Tenure": [
-             {'name': 'sample 1', 'n': 12, 'responding':[15, 15, 70]},
-             {'name': 'sample 2', 'n': 16, 'responding':[10,30,60]},
+         },
+         {
+         'Tenure': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
             ],
          },
      ],
  }
 
-def coord(x, y, unit=1):
+largeInputExample = {
+     'summary': {
+     'total_n': 114,
+     'responding': [68, 26, 6],
+     'favorable': 68,
+     'distrobution': [2, 5, 26, 33, 34],
+     'mean': 3.93,
+     },
+     'demographics': [
+         {
+         'Locations': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[33,33,33],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+            ],
+         },
+         {
+         'People Managment': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[20, 30, 50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,50,40],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+            ],
+         },
+         {
+         'Tenure': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 3', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 4', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 5', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 6', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 7', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 8', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 9', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 10', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 11', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 12', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 13', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 14', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 15', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 16', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 17', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 18', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 19', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 20', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 21', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 22', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 23', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 24', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 25', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 26', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 27', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 28', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 29', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 30', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 31', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 32', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 33', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 35', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 36', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 37', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 38', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 39', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 40', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 41', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 42', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 43', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 44', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 45', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 46', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 47', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 48', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 49', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+            ],
+         },
+     ],
+ }
+
+def coord(x, y, unit=mm):
     x, y = x * unit, height -  y * unit
     return x, y
 
@@ -76,7 +167,6 @@ def draw_grid(canvas):
 def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentUnfavorable,header=False):
 
     #Header Rectangles
-
     percentFavorableFloat = float(percentFavorable)/100
     percentNeutralFloat = float(percentNeutral)/100
     percentUnfavorableFloat = float(percentUnfavorable)/100
@@ -140,6 +230,50 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
         d.add(String(percentResponseTextXposition*mm,percentResponseTextYposition*mm, percentResponseText, fontSize=7, fontName='Helvetica-Bold'))
     return d
 
+def percent_distrobution_space_equalizer(distrobutionList):
+    distroString = ''
+    fourHTMLspaces = " &nbsp &nbsp "
+
+    for item in distrobutionList:
+        distroString = distroString + str(item) + fourHTMLspaces
+
+    return distroString
+
+def create_paragraph_and_chart_row(parameterDict, label = '',bold = False):
+
+    if bold:
+        labelParagraph = Paragraph('''<b>%s'''%label, rightAlignedStyle)
+    else:
+        labelParagraph = Paragraph('''%s'''%label, rightAlignedStyle)
+
+    TotalNParagraph = Paragraph('''%s'''%parameterDict.get("total_n"), rightAlignedStyle)
+    Chart = build_percent_responding_rectangles(parameterDict.get('responding')[0],parameterDict.get('responding')[1],parameterDict.get('responding')[2],header=False)
+    FavorableParagraph =  Paragraph('''%s'''%parameterDict.get("favorable"), rightAlignedStyle)
+    Distrobution = percent_distrobution_space_equalizer(parameterDict.get('distrobution'))
+    DistParagraph = Paragraph('''%s'''%Distrobution, rightAlignedStyle)
+    MeanParagraph =  Paragraph('''%s'''%parameterDict.get("mean"), rightAlignedStyle)
+
+    return [labelParagraph, TotalNParagraph, Chart, FavorableParagraph, DistParagraph, MeanParagraph]
+
+def populate_chart_data(input):
+    data = []
+
+    summaryData = input.get('summary')
+    if summaryData:
+        summaryList = create_paragraph_and_chart_row(summaryData,"Overall Company",True)
+        data.append(summaryList)
+
+    demographicData = input.get('demographics')
+    for demoDicts in demographicData:
+        headerKey = demoDicts.keys()[0]
+        headerParagraph = Paragraph('''<b>%s'''%headerKey, rightAlignedStyle)
+        data.append([headerParagraph,"","","","",""])
+        for demoDict in demoDicts[headerKey]:
+            sampleName = demoDict.get("name","")
+            demoList = create_paragraph_and_chart_row(demoDict,sampleName,False)
+            data.append(demoList)
+    return data
+
 
 percentRespondingHeader = build_percent_responding_rectangles(33, 33, 33, header=True)
 chart = build_percent_responding_rectangles(20, 30, 50, header=False)
@@ -147,24 +281,28 @@ perfMgmtHeader = Paragraph('''<b>Perfomance Managment</b>''', headerStyle)
 totalNheader = Paragraph('''<b>Total N''', headerStyle)
 percentResp = Paragraph('''<b>Percent Responding''', headerStyle)
 percentFavHeader = Paragraph('''<b>% Fav''', headerStyle)
-percentDistHeader = Paragraph('''<b> &nbsp &nbsp &nbsp &nbsp &nbsp %  Distribution <br/> 1 &nbsp &nbsp &nbsp &nbsp  2 &nbsp &nbsp &nbsp &nbsp 3 &nbsp &nbsp &nbsp &nbsp 4 &nbsp &nbsp &nbsp &nbsp 5''', headerStyle)
+percentDistHeader = Paragraph('''<b>% Distribution  &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 1 &nbsp &nbsp  2 &nbsp &nbsp 3 &nbsp &nbsp 4 &nbsp &nbsp 5''', headerStyle)
 meanHeader = Paragraph('''<b>Mean''', headerStyle)
-data= [[perfMgmtHeader, totalNheader,percentRespondingHeader, percentFavHeader, percentDistHeader,meanHeader],
-       ['10', '11', chart, '13', '14', '15'],
-       ['20', '21', '22', '23', '24', '25'],
-       ['30', '31', '32', '33', '34', '35'],
-       ['40', '41', '42', '43', '44', '45'],
-]
+reportHeader = [perfMgmtHeader, totalNheader,percentRespondingHeader, percentFavHeader, percentDistHeader,meanHeader]
 
+data = populate_chart_data(largeInputExample)
+chartData = []
+chartData.append(reportHeader)
+
+
+for d in data:
+    chartData.append(d)
 #Style the table
-t = Table(data,style=[
+t = Table(chartData,style=[
     ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ('FONTSIZE',(0, 0), (-1, -1), 7),
-    #('ALIGN', (0,0), (-1,1), 'LEFT'),
+    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
     #('BACKGROUND',(0,2),(-1,-1),colors.green)
     #('LINEABOVE',(0,1),(-1,1),1,colors.rgb2cmyk(1,1,1)),
     #('SPAN',(0,1),(-1,1)),
 ])
+t.hAlign = "LEFT"
+
 
 # Fixed column widths
 t._argW[0] = 50.8*mm #Perf Mgmt
@@ -175,10 +313,11 @@ t._argW[4] = 38.1*mm # % Dist
 t._argW[5] = 10.922*mm # Mean
 
 c = canvas.Canvas(buffer, pagesize=letter)
-t.wrapOn(c, width, height)
-t.drawOn(c, *coord(5, 60, mm))
-#drawGrid(c)
-c.save()
+
+doc = SimpleDocTemplate(buffer,pagesize=letter,rightMargin=30,leftMargin=30,topMargin=30,bottomMargin=30,)
+
+
+doc.build([t])
 
 #Write the buffer to disk and close the file
 pdf = buffer.getvalue()
