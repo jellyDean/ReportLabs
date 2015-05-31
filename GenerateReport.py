@@ -41,7 +41,7 @@ leftAlignedStyle.alignment = TA_LEFT
 leftAlignedStyle.fontSize = 7
 leftAlignedStyle.fontName = 'Helvetica'
 
-'''Function that is used to generate charts. The methodolgy is to create 3 rectangles and combine the. I used
+'''Function that is used to generate charts. The methodolgy is to create 3 rectangles and combine them. I used
 the length of the cell which is 60mm and calculated percentages off that
 '''
 def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentUnfavorable,header=False):
@@ -202,8 +202,8 @@ t = Table(reportData,style=tableStyle)
 t.hAlign = 'LEFT'
 
 #Fixed column widths
-t._argW[0] = 50.8*mm #Perf Mgmt
-t._argW[1] = 12.7*mm #Total N
+t._argW[0] = 50.8*mm # Perf Mgmt
+t._argW[1] = 12.7*mm # Total N
 t._argW[2] = 63.5*mm # % Resp
 t._argW[3] = 12.7*mm # % Fav
 t._argW[4] = 38.1*mm # % Dist
