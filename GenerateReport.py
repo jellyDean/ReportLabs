@@ -21,6 +21,32 @@ headerStyle.alignment = TA_CENTER
 headerStyle.fontSize = 7
 headerStyle.fontName = 'Helvetica-Bold'
 
+inputExample = {
+     'summary': {
+     'n': 114,
+     'responding': [68, 26, 6],
+     'favorable': 68,
+     'distrobution': [2, 5, 26, 33, 34],
+     'mean': 3.93,
+     },
+     'demographics': [
+         {
+         "Locations": [
+             {'name': 'sample 1', 'n': 12, 'responding':[20,30,50]},
+             {'name': 'sample 2', 'n': 16, 'responding':[33,33,33]},
+            ],
+         "People Management": [
+             {'name': 'sample 1', 'n': 12, 'responding':[20, 30, 50]},
+             {'name': 'sample 2', 'n': 16, 'responding':[10,50,40]},
+            ],
+         "Tenure": [
+             {'name': 'sample 1', 'n': 12, 'responding':[15, 15, 70]},
+             {'name': 'sample 2', 'n': 16, 'responding':[10,30,60]},
+            ],
+         },
+     ],
+ }
+
 def coord(x, y, unit=1):
     x, y = x * unit, height -  y * unit
     return x, y
@@ -116,7 +142,7 @@ def build_percent_responding_rectangles(percentFavorable,percentNeutral,percentU
 
 
 percentRespondingHeader = build_percent_responding_rectangles(33, 33, 33, header=True)
-chart = build_percent_responding_rectangles(33, 33, 33, header=False)
+chart = build_percent_responding_rectangles(20, 30, 50, header=False)
 perfMgmtHeader = Paragraph('''<b>Perfomance Managment</b>''', headerStyle)
 totalNheader = Paragraph('''<b>Total N''', headerStyle)
 percentResp = Paragraph('''<b>Percent Responding''', headerStyle)
