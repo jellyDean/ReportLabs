@@ -18,36 +18,7 @@ def draw_grid(canvas):
         c.line(voff, hoff + yi * INTERVAL,
                voff + numv * INTERVAL, hoff + yi * INTERVAL)
 
-smallInputExample = {
-     'summary': {
-     'total_n': 114,
-     'responding': [68, 26, 6],
-     'favorable': 68,
-     'distrobution': [2, 5, 26, 33, 34],
-     'mean': 3.93,
-     },
-     'demographics': [
-         {
-         'Locations': [
-             {'name': 'sample 1', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
-             {'name': 'sample 2', 'total_n': 16, 'responding':[33,33,33],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
-            ],
-         },
-         {
-         'People Managment': [
-             {'name': 'sample 1', 'total_n': 12, 'responding':[20, 30, 50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
-             {'name': 'sample 2', 'total_n': 16, 'responding':[10,50,40],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
 
-            ],
-         },
-         {
-         'Tenure': [
-             {'name': 'sample 1', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
-             {'name': 'sample 2', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
-            ],
-         },
-     ],
- }
 
 largeInputExample = {
      'summary': {

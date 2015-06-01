@@ -11,7 +11,36 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.units import mm
 from reportlab.graphics.shapes import *
 from io import BytesIO
+smallInputExample = {
+     'summary': {
+     'total_n': 114,
+     'responding': [68, 26, 6],
+     'favorable': 68,
+     'distrobution': [2, 5, 26, 33, 34],
+     'mean': 3.93,
+     },
+     'demographics': [
+         {
+         'Locations': [
+             {'name': 'dean 1', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[33,33,33],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+            ],
+         },
+         {
+         'People Managment': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[20, 30, 50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,50,40],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
 
+            ],
+         },
+         {
+         'Tenure': [
+             {'name': 'sample 1', 'total_n': 12, 'responding':[15, 15, 70],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'sample 2', 'total_n': 16, 'responding':[10,30,60],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+            ],
+         },
+     ],
+ }
 #Use this list later on to SPAN on location, People MGMT, Tenure Labels
 labelRowList = []
 
@@ -176,7 +205,7 @@ meanHeader = Paragraph('''<b>Mean''', headerStyle)
 reportHeader = [perfMgmtHeader, totalNheader,percentRespondingHeader, percentFavHeader, percentDistHeader,meanHeader]
 
 #Populate the chart with data. This is where the inputDict will be passed in
-data = populate_chart_data(None)
+data = populate_chart_data(smallInputExample)
 
 reportData = []
 reportData.append(reportHeader)
