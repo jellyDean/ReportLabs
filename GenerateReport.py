@@ -22,7 +22,7 @@ smallInputExample = {
      'demographics': [
          {
          'Locations': [
-             {'name': 'dean 1', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
+             {'name': 'dean 3', 'total_n': 12, 'responding':[20,30,50],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
              {'name': 'sample 2', 'total_n': 16, 'responding':[33,33,33],'distrobution': [2, 5, 26, 33, 34],'mean': 3.93,'favorable': 68},
             ],
          },
@@ -155,7 +155,7 @@ def percent_distrobution_space_equalizer(distrobutionList):
 def create_paragraph_and_chart_row(parameterDict, label = '',bold = False):
 
     if bold:
-        labelParagraph = Paragraph('''<b>%s'''%label, rightAlignedStyle)
+        labelParagraph = Paragraph('''<b>%s</b>'''%label, rightAlignedStyle)
     else:
         labelParagraph = label
 
@@ -182,7 +182,7 @@ def populate_chart_data(input):
     #Iterate through the different demographics and create rows for them
     for demoDicts in demographicData:
         headerKey = demoDicts.keys()[0]
-        headerParagraph = Paragraph('''<b>%s'''%headerKey, rightAlignedStyle)
+        headerParagraph = Paragraph('''<b>%s</b>'''%headerKey, rightAlignedStyle)
         labelRowCounter += 1
         labelRowList.append(labelRowCounter)
         data.append([headerParagraph,'','','','',''])
@@ -197,11 +197,11 @@ def populate_chart_data(input):
 percentRespondingHeader = build_percent_responding_rectangles(33, 33, 33, header=True)
 chart = build_percent_responding_rectangles(20, 30, 50, header=False)
 perfMgmtHeader = Paragraph('''<b>Perfomance Managment</b>''', headerStyle)
-totalNheader = Paragraph('''<b>Total N''', headerStyle)
-percentResp = Paragraph('''<b>Percent Responding''', headerStyle)
-percentFavHeader = Paragraph('''<b>% Fav''', headerStyle)
-percentDistHeader = Paragraph('''<b>% Distribution  &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 1 &nbsp &nbsp  2 &nbsp &nbsp 3 &nbsp &nbsp 4 &nbsp &nbsp 5''', headerStyle)
-meanHeader = Paragraph('''<b>Mean''', headerStyle)
+totalNheader = Paragraph('''<b>Total N</b>''', headerStyle)
+percentResp = Paragraph('''<b>Percent Responding</b>''', headerStyle)
+percentFavHeader = Paragraph('''<b>% Fav</b>''', headerStyle)
+percentDistHeader = Paragraph('''<b>% Distribution  &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 1 &nbsp &nbsp  2 &nbsp &nbsp 3 &nbsp &nbsp 4 &nbsp &nbsp 5</b>''', headerStyle)
+meanHeader = Paragraph('''<b>Mean</b>''', headerStyle)
 reportHeader = [perfMgmtHeader, totalNheader,percentRespondingHeader, percentFavHeader, percentDistHeader,meanHeader]
 
 #Populate the chart with data. This is where the inputDict will be passed in
